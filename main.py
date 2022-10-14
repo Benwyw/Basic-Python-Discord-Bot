@@ -5,8 +5,21 @@ from discord.ext import commands
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
+guild_ids = [GUILD]
 
 bot = commands.Bot(description='Sample status', guild_subscriptions=True, intents=discord.Intents.all())
+
+@bot.slash_command(guild_ids=guild_ids, name='test')
+async def _test(ctx: commands.Context):
+    """Test"""
+    await ctx.defer()
+    await ctx.send_followup("Test!")
+    
+@bot.slash_command(guild_ids=guild_ids, name='testparam')
+async def _testparam(ctx: commands.Context, param):
+    """Test with param"""
+    await ctx.defer()
+    await ctx.send_followup(f"Test! {param}")
 
 @bot.event
 async def on_ready():
